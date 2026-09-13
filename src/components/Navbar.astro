@@ -1,0 +1,100 @@
+---
+const NAV_LINKS = [
+  { label: 'À propos', href: '#hero' },
+  { label: 'Compétences', href: '#skills' },
+  { label: 'Projets', href: '#projects' },
+  { label: 'Expérience', href: '#experience' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 transition-colors">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <a href="#hero" class="flex items-center gap-2 text-zinc-900 dark:text-zinc-100 font-bold text-lg tracking-tight focus-visible:outline-indigo-500">
+      <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-mono text-sm font-black shadow-sm">JD</span>
+      <span>JohnDoe<span class="text-indigo-600 dark:text-indigo-400">.dev</span></span>
+    </a>
+
+    <!-- Navigation Desktop -->
+    <nav class="hidden md:flex items-center gap-6" aria-label="Navigation principale">
+      {NAV_LINKS.map((link) => (
+        <a
+          href={link.href}
+          class="text-sm font-medium text-zinc-600 hover:text-indigo-600 dark:text-zinc-300 dark:hover:text-indigo-400 transition-colors focus-visible:outline-indigo-500"
+        >
+          {link.label}
+        </a>
+      ))}
+
+      <button
+        id="theme-toggle-btn"
+        type="button"
+        aria-label="Basculer le thème"
+        class="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:ring-2 hover:ring-indigo-500 transition-all cursor-pointer"
+      >
+        <span class="dark:hidden">🌙</span>
+        <span class="hidden dark:inline">☀️</span>
+      </button>
+    </nav>
+
+    <!-- Bouton Mobile -->
+    <div class="flex items-center gap-2 md:hidden">
+      <button
+        id="theme-toggle-btn-mobile"
+        type="button"
+        aria-label="Basculer le thème"
+        class="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs"
+      >
+        <span class="dark:hidden">🌙</span>
+        <span class="hidden dark:inline">☀️</span>
+      </button>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        aria-label="Menu"
+        class="p-2 rounded-lg text-zinc-700 dark:text-zinc-300"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 space-y-3">
+    {NAV_LINKS.map((link) => (
+      <a
+        href={link.href}
+        class="block py-2 text-sm font-medium text-zinc-700 hover:text-indigo-600 dark:text-zinc-200 dark:hover:text-indigo-400"
+      >
+        {link.label}
+      </a>
+    ))}
+  </div>
+</header>
+
+<script>
+  // Gestion du thème
+  const toggleTheme = () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  };
+
+  document.getElementById('theme-toggle-btn')?.addEventListener('click', toggleTheme);
+  document.getElementById('theme-toggle-btn-mobile')?.addEventListener('click', toggleTheme);
+
+  // Menu mobile
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+  });
+</script>

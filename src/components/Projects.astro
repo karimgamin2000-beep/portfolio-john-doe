@@ -1,0 +1,194 @@
+---
+import { PROJECTS } from '../data/portfolioData';
+
+const CATEGORIES = ['Tous', 'Frontend', 'Backend', 'Full-Stack', 'Mobile'];
+---
+
+<section id="projects" class="py-16 px-4 sm:px-6 max-w-6xl mx-auto border-t border-zinc-200 dark:border-zinc-800">
+  <div class="space-y-4 mb-8">
+    <div class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-sm font-bold uppercase tracking-wider">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+      <span>Réalisations</span>
+    </div>
+    <h2 class="text-3xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
+      Projets Sélectionnés
+    </h2>
+  </div>
+
+  <!-- Barre de filtrage interactif avec URL State -->
+  <div class="flex flex-wrap items-center gap-2 mb-8" role="tablist" aria-label="Filtrer les projets">
+    {CATEGORIES.map((category) => (
+      <button
+        type="button"
+        data-filter-btn={category}
+        class={`filter-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
+          category === 'Tous'
+            ? 'active bg-indigo-600 text-white shadow-sm'
+            : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+        }`}
+      >
+        {category}
+      </button>
+    ))}
+  </div>
+
+  <!-- Grille de projets -->
+  <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {PROJECTS.map((project) => (
+      <article
+        data-category={project.category}
+        class="project-card flex flex-col justify-between p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-indigo-500/60 hover:shadow-lg transition-all"
+      >
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+              {project.category}
+            </span>
+            <div class="flex items-center gap-2">
+              {project.githubUrl ? (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Code source GitHub de ${project.title}`}
+                  class="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                </a>
+              ) : (
+                <span class="p-1.5 text-zinc-300 dark:text-zinc-700 cursor-not-allowed" title="Repo privé">
+                  <svg class="w-4 h-4 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                </span>
+              )}
+
+              {project.liveUrl ? (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Démonstration en direct de ${project.title}`}
+                  class="p-1.5 text-zinc-500 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              ) : (
+                <span class="p-1.5 text-zinc-300 dark:text-zinc-700 cursor-not-allowed" title="Pas de démo publique">
+                  <svg class="w-4 h-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </span>
+              )}
+            </div>
+          </div>
+
+          <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">{project.title}</h3>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">{project.description}</p>
+
+          <ul class="space-y-1.5 mb-5">
+            {project.highlights.map((point) => (
+              <li class="flex items-center gap-2 text-xs text-zinc-700 dark:text-zinc-300">
+                <span class="text-indigo-500 font-bold">✦</span>
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 flex flex-wrap gap-1.5">
+          {project.technologies.map((t) => (
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+              {t}
+            </span>
+          ))}
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <!-- État vide (Empty State) -->
+  <div id="empty-state" class="hidden p-12 text-center rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/30">
+    <div class="text-3xl mb-2">📭</div>
+    <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-200">Aucun projet trouvé</h3>
+    <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+      Aucun projet ne correspond à cette catégorie pour le moment.
+    </p>
+    <button
+      id="reset-filter-btn"
+      type="button"
+      class="mt-4 px-4 py-2 text-xs font-semibold bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer"
+    >
+      Réinitialiser le filtre
+    </button>
+  </div>
+</section>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.project-card');
+  const emptyState = document.getElementById('empty-state');
+  const resetBtn = document.getElementById('reset-filter-btn');
+
+  function setCategory(category: string, updateUrl = true) {
+    let visibleCount = 0;
+
+    // Mise à jour des boutons
+    buttons.forEach((btn) => {
+      const match = btn.dataset.filterBtn === category;
+      if (match) {
+        btn.className = 'filter-btn active px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer bg-indigo-600 text-white shadow-sm';
+      } else {
+        btn.className = 'filter-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700';
+      }
+    });
+
+    // Filtrage des cartes
+    cards.forEach((card) => {
+      const cardCategory = card.dataset.category;
+      if (category === 'Tous' || cardCategory === category) {
+        card.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    // Empty state
+    if (visibleCount === 0) {
+      emptyState?.classList.remove('hidden');
+    } else {
+      emptyState?.classList.add('hidden');
+    }
+
+    // Mise à jour URL (URL SearchParams)
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (category === 'Tous') {
+        url.searchParams.delete('category');
+      } else {
+        url.searchParams.set('category', category);
+      }
+      window.history.pushState({}, '', url.toString());
+    }
+  }
+
+  // Écoute des clics
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.filterBtn || 'Tous';
+      setCategory(cat);
+    });
+  });
+
+  resetBtn?.addEventListener('click', () => setCategory('Tous'));
+
+  // Lecture de l'URL au chargement
+  const params = new URLSearchParams(window.location.search);
+  const initialCategory = params.get('category') || 'Tous';
+  if (initialCategory !== 'Tous') {
+    setCategory(initialCategory, false);
+  }
+
+  // Écoute retour navigateur (Back/Forward)
+  window.addEventListener('popstate', () => {
+    const p = new URLSearchParams(window.location.search);
+    setCategory(p.get('category') || 'Tous', false);
+  });
+</script>

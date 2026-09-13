@@ -1,0 +1,70 @@
+---
+import { PERSONAL_INFO } from '../data/portfolioData';
+---
+
+<section id="hero" class="pt-32 pb-20 px-4 sm:px-6 max-w-6xl mx-auto">
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
+    <div class="space-y-6 max-w-2xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-300 text-xs font-semibold">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>{PERSONAL_INFO.availability}</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight">
+        Bonjour, je suis <span class="text-indigo-600 dark:text-indigo-400">{PERSONAL_INFO.name}</span>.
+      </h1>
+
+      <p class="text-xl font-medium text-zinc-700 dark:text-zinc-300">
+        {PERSONAL_INFO.title}
+      </p>
+
+      <p class="text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        {PERSONAL_INFO.tagline}
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a
+          href="#projects"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-all shadow-sm hover:shadow-indigo-500/20 focus-visible:outline-indigo-500"
+        >
+          <span>Découvrir mes projets</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+        <a
+          href="#contact"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-sm font-semibold transition-all focus-visible:outline-indigo-500"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          <span>Me contacter</span>
+        </a>
+        <a
+          href="/cv.md"
+          download="John_Doe_CV.md"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-sm font-medium transition-all"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span>Télécharger le CV</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Photo John Doe -->
+    <div class="relative group flex-shrink-0">
+      <div class="w-48 h-60 sm:w-56 sm:h-72 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-1 shadow-2xl overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-300">
+        <img
+          src="/john-doe.jpg"
+          alt="John Doe — Développeur Senior"
+          loading="eager"
+          decoding="async"
+          width="250"
+          height="320"
+          class="w-full h-full object-cover object-top rounded-[14px]"
+        />
+      </div>
+      <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-zinc-900/90 dark:bg-zinc-800/90 text-zinc-100 border border-zinc-700 shadow-md text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 backdrop-blur-sm">
+        <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+        <span>John Doe • Senior Dev</span>
+      </div>
+    </div>
+  </div>
+</section>

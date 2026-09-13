@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>John Doe — Développeur Web Full-Stack Senior</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- React 18 & Babel Standalone -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 min-h-screen font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-200">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const PERSONAL_INFO = {
+      name: "John Doe",
+      title: "Développeur Web Full-Stack Senior",
+      tagline: "7 ans d’expérience dans la conception, l’architecture et le déploiement d’applications web scalables et résilientes.",
+      availability: "Disponible pour opportunités hybrides ou remote",
+      location: "Paris, France",
+      email: "vagehe1989@bowlfuel.com",
+      github: "https://github.com/johndoe-dev",
+      linkedin: "https://linkedin.com/in/johndoe-dev",
+      website: "https://johndoe.dev"
+    };
+
+    const SKILL_CATEGORIES = [
+      {
+        categoryName: "Frontend",
+        skills: ["TypeScript", "React 19", "Next.js (App Router)", "Tailwind CSS", "Redux Toolkit", "TanStack Query", "WCAG 2.1 AA"]
+      },
+      {
+        categoryName: "Backend & API",
+        skills: ["Node.js", "Express", "NestJS", "REST APIs", "GraphQL", "tRPC", "WebSockets"]
+      },
+      {
+        categoryName: "Bases de données & Caching",
+        skills: ["PostgreSQL", "Prisma ORM", "Drizzle", "Redis", "MongoDB"]
+      },
+      {
+        categoryName: "DevOps, Cloud & Tests",
+        skills: ["Docker", "GitHub Actions", "AWS (S3, ECS, Lambda)", "Vercel", "Vitest", "Playwright", "Jest"]
+      }
+    ];
+
+    const PROJECTS = [
+      {
+        id: "proj-1",
+        title: "CloudMetrics",
+        description: "Tableau de bord SaaS d’observabilité en temps réel avec agrégation de métriques, logs et alertes infrastructure multi-cloud.",
+        technologies: ["Next.js", "Tailwind CSS", "TypeScript", "WebSockets", "Prisma", "PostgreSQL"],
+        highlights: ["Agrégation temps réel", "Support offline & sync", "Export PDF/CSV"],
+        category: "Full-Stack",
+        githubUrl: "https://github.com/johndoe-dev/cloudmetrics",
+        liveUrl: "https://cloudmetrics-demo.example.com"
+      },
+      {
+        id: "proj-2",
+        title: "DevFlow UI",
+        description: "Bibliothèque de 40+ composants React headless hautement accessibles conformes WCAG 2.1 AA.",
+        technologies: ["React", "TypeScript", "Tailwind CSS", "Radix UI", "Storybook"],
+        highlights: ["1 200+ GitHub Stars", "Navigation clavier totale", "Poids < 15kb"],
+        category: "Frontend",
+        githubUrl: "https://github.com/johndoe-dev/devflow-ui",
+        liveUrl: null // Cas limite : null
+      },
+      {
+        id: "proj-3",
+        title: "QuickCache Engine",
+        description: "Micro-service de cache distribué ultra-rapide avec gestion de priorités et stratégie de purge sélective.",
+        technologies: ["Node.js", "TypeScript", "Redis", "Docker", "GitHub Actions"],
+        highlights: ["25 000 ops/sec", "Erreurs < 0.001%", "Persistence AOF/RDB"],
+        category: "Backend",
+        githubUrl: "https://github.com/johndoe-dev/quickcache",
+        liveUrl: null // Cas limite : null
+      }
+    ];
+
+    const EXPERIENCES = [
+      {
+        id: "exp-1",
+        role: "Lead Développeur Full-Stack",
+        company: "CloudScale SaaS",
+        location: "Paris",
+        period: "Mars 2022 – Présent",
+        achievements: [
+          "Direction technique d’une équipe de 5 ingénieurs sur la refonte globale de la plateforme de monitoring.",
+          "Migration complète vers Next.js App Router et NestJS/PostgreSQL.",
+          "Généralisation des tests unitaires et e2e via Vitest et Playwright."
+        ],
+        metrics: "-45% de temps de chargement (LCP < 1.2s) • 100k req/min soutenues • Couverture de tests à 85%"
+      },
+      {
+        id: "exp-2",
+        role: "Développeur Full-Stack",
+        company: "TechNova Studio",
+        location: "Lyon",
+        period: "Septembre 2019 – Février 2022",
+        achievements: [
+          "Développement de plateformes e-commerce et dashboards B2B haute disponibilité pour des clients du CAC 40.",
+          "Intégration de tunnels de paiement résilients via Stripe et gestion des webhooks asynchrones.",
+          "Conception d’un Design System partagé basé sur Tailwind CSS et Radix UI."
+        ],
+        metrics: "-35% sur le temps de développement UI • 99.98% de disponibilité des paiements"
+      },
+      {
+        id: "exp-3",
+        role: "Développeur Front-End",
+        company: "StartUp Pulse",
+        location: "Nantes",
+        period: "Juillet 2017 – Août 2019",
+        achievements: [
+          "Conception d’interfaces réactives pour une solution collaborative SaaS.",
+          "Intégration de WebSockets pour la synchronisation multi-utilisateurs en temps réel."
+        ],
+        metrics: "Latence synchronisée < 50ms"
+      }
+    ];
+
+    function App() {
+      const [isDark, setIsDark] = useState(() => {
+        const saved = localStorage.getItem('theme');
+        if (saved) return saved === 'dark';
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      });
+
+      const [filter, setFilter] = useState('Tous');
+      const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+      const [formStatus, setFormStatus] = useState('idle');
+      const [formError, setFormError] = useState('');
+      const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+
+      useEffect(() => {
+        document.documentElement.classList.toggle('dark', isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      }, [isDark, filter, formStatus]);
+
+      const filteredProjects = useMemo(() => {
+        if (filter === 'Tous') return PROJECTS;
+        return PROJECTS.filter(p => p.category === filter);
+      }, [filter]);
+
+      const handleContactSubmit = (e) => {
+        e.preventDefault();
+        setFormError('');
+
+        if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+          setFormStatus('error');
+          setFormError('Veuillez renseigner tous les champs obligatoires.');
+          return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+          setFormStatus('error');
+          setFormError('Veuillez saisir une adresse email valide.');
+          return;
+        }
+
+        setFormStatus('loading');
+        fetch('https://formsubmit.co/ajax/vagehe1989@bowlfuel.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            Nom: formData.name,
+            Email: formData.email,
+            Sujet: formData.subject || 'Message depuis Portfolio John Doe',
+            Message: formData.message,
+            _subject: `[Portfolio John Doe] Contact de ${formData.name}`,
+            _template: 'table'
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success !== 'false') {
+            setFormStatus('success');
+            setFormData({ name: '', email: '', subject: '', message: '' });
+          } else {
+            setFormStatus('error');
+            setFormError(data.message || 'Erreur lors de l’envoi.');
+          }
+        })
+        .catch(err => {
+          setFormStatus('error');
+          setFormError('Erreur de connexion. Veuillez réessayer.');
+        });
+      };
+
+      return (
+        <div>
+          {/* NAVIGATION HEADER */}
+          <header className="fixed top-0 inset-x-0 h-16 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 z-50">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
+              <a href="#hero" className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                <span className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-mono text-sm">JD</span>
+                <span>JohnDoe<span className="text-indigo-600 dark:text-indigo-400">.dev</span></span>
+              </a>
+
+              <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+                <a href="#skills" className="text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Compétences</a>
+                <a href="#projects" className="text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Projets</a>
+                <a href="#experience" className="text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Expérience</a>
+                <a href="#contact" className="text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Contact</a>
+                
+                <button
+                  onClick={() => setIsDark(!isDark)}
+                  className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:ring-2 hover:ring-indigo-500 transition"
+                  title="Basculer le thème"
+                >
+                  {isDark ? '☀️ Clair' : '🌙 Sombre'}
+                </button>
+              </nav>
+
+              <div className="flex md:hidden items-center gap-2">
+                <button
+                  onClick={() => setIsDark(!isDark)}
+                  className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs"
+                >
+                  {isDark ? '☀️' : '🌙'}
+                </button>
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-2 rounded-lg text-zinc-700 dark:text-zinc-300"
+                >
+                  ☰
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Drawer */}
+            {mobileMenuOpen && (
+              <div className="md:hidden bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 space-y-3">
+                <a href="#skills" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium">Compétences</a>
+                <a href="#projects" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium">Projets</a>
+                <a href="#experience" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium">Expérience</a>
+                <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium">Contact</a>
+              </div>
+            )}
+          </header>
+
+          {/* HERO SECTION */}
+          <section id="hero" className="pt-32 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
+              <div className="max-w-2xl space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>{PERSONAL_INFO.availability}</span>
+                </div>
+
+                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-tight">
+                  Bonjour, je suis <span className="text-indigo-600 dark:text-indigo-400">{PERSONAL_INFO.name}</span>.
+                </h1>
+
+                <p className="text-xl font-medium text-zinc-700 dark:text-zinc-300">
+                  {PERSONAL_INFO.title}
+                </p>
+
+                <p className="text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  {PERSONAL_INFO.tagline}
+                </p>
+
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <a
+                    href="#projects"
+                    className="px-5 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-sm transition"
+                  >
+                    Découvrir mes projets →
+                  </a>
+                  <a
+                    href="#contact"
+                    className="px-5 py-3 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-sm font-semibold transition"
+                  >
+                    Me contacter
+                  </a>
+                  <a
+                    href="cv.md"
+                    download="John_Doe_CV.md"
+                    className="px-5 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-sm font-medium transition"
+                  >
+                    Télécharger CV.md 📄
+                  </a>
+                </div>
+              </div>
+
+              {/* Photo John Doe */}
+              <div className="relative group flex-shrink-0">
+                <div className="w-48 h-60 sm:w-56 sm:h-72 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-1 shadow-2xl overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-300">
+                  <img
+                    src="john-doe.jpg"
+                    alt="John Doe — Développeur Senior"
+                    className="w-full h-full object-cover object-top rounded-[14px]"
+                  />
+                </div>
+                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-zinc-900/90 dark:bg-zinc-800/90 text-zinc-100 border border-zinc-700 shadow-md text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 backdrop-blur-sm">
+                  <span className="w-2 h-2 rounded-full bg-indigo-400"></span>
+                  <span>John Doe • Senior Dev</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SKILLS SECTION */}
+          <section id="skills" className="py-16 px-4 sm:px-6 max-w-6xl mx-auto border-t border-zinc-200 dark:border-zinc-800">
+            <div className="mb-10">
+              <span className="text-xs uppercase font-bold tracking-wider text-indigo-600 dark:text-indigo-400">Stack & Expertise</span>
+              <h2 className="text-3xl font-bold tracking-tight mt-1 text-zinc-900 dark:text-white">Compétences Techniques</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {SKILL_CATEGORIES.map(cat => (
+                <div key={cat.categoryName} className="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-bold text-lg text-zinc-800 dark:text-zinc-100">{cat.categoryName}</h3>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-semibold">
+                      {cat.skills.length} technos
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {cat.skills.map(s => (
+                      <span key={s} className="px-3 py-1 rounded-md text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* PROJECTS SECTION WITH FILTER & EDGE CASES */}
+          <section id="projects" className="py-16 px-4 sm:px-6 max-w-6xl mx-auto border-t border-zinc-200 dark:border-zinc-800">
+            <div className="mb-8">
+              <span className="text-xs uppercase font-bold tracking-wider text-indigo-600 dark:text-indigo-400">Portfolio</span>
+              <h2 className="text-3xl font-bold tracking-tight mt-1 text-zinc-900 dark:text-white">Projets Réalisés</h2>
+            </div>
+
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {['Tous', 'Frontend', 'Backend', 'Full-Stack', 'Mobile (Cas Limite)'].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition ${
+                    filter === cat
+                      ? 'bg-indigo-600 text-white shadow-sm'
+                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Empty state or Grid */}
+            {filteredProjects.length === 0 ? (
+              <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/40">
+                <div className="text-4xl mb-3">📭</div>
+                <h3 className="text-lg font-bold text-zinc-800 dark:text-zinc-200">Aucun projet trouvé</h3>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                  Aucun projet ne correspond à la catégorie sélectionnée « {filter} ».
+                </p>
+                <button
+                  onClick={() => setFilter('Tous')}
+                  className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold hover:bg-indigo-700 transition"
+                >
+                  Réinitialiser le filtre
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {filteredProjects.map(p => (
+                  <div key={p.id} className="flex flex-col justify-between p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-indigo-500/50 transition">
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-400 font-semibold border border-indigo-200 dark:border-indigo-800">
+                          {p.category}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {/* Fallback liens */}
+                          {p.githubUrl ? (
+                            <a href={p.githubUrl} target="_blank" className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-indigo-600 font-medium">GitHub ↗</a>
+                          ) : (
+                            <span className="text-xs text-zinc-400 dark:text-zinc-600 cursor-not-allowed" title="Repo privé">Privé</span>
+                          )}
+
+                          {p.liveUrl ? (
+                            <a href={p.liveUrl} target="_blank" className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium">Démo ↗</a>
+                          ) : (
+                            <span className="text-xs text-zinc-400 dark:text-zinc-600 cursor-not-allowed" title="Pas de live demo">Pas de démo</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">{p.title}</h3>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">{p.description}</p>
+
+                      <ul className="space-y-1 mb-6">
+                        {p.highlights.map((h, i) => (
+                          <li key={i} className="text-xs text-zinc-600 dark:text-zinc-400 flex items-center gap-2">
+                            <span className="text-indigo-500 font-bold">•</span> {h}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap gap-1">
+                      {p.technologies.map(t => (
+                        <span key={t} className="text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* EXPERIENCE TIMELINE */}
+          <section id="experience" className="py-16 px-4 sm:px-6 max-w-6xl mx-auto border-t border-zinc-200 dark:border-zinc-800">
+            <div className="mb-10">
+              <span className="text-xs uppercase font-bold tracking-wider text-indigo-600 dark:text-indigo-400">Carrière</span>
+              <h2 className="text-3xl font-bold tracking-tight mt-1 text-zinc-900 dark:text-white">Expériences Professionnelles</h2>
+            </div>
+
+            <div className="relative border-l-2 border-indigo-200 dark:border-indigo-900/60 ml-4 space-y-8">
+              {EXPERIENCES.map(exp => (
+                <div key={exp.id} className="relative pl-6">
+                  <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white dark:bg-zinc-950 border-2 border-indigo-600 dark:border-indigo-400"></div>
+
+                  <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                      <div>
+                        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{exp.role}</h3>
+                        <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">{exp.company} — {exp.location}</p>
+                      </div>
+                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 self-start sm:self-center">
+                        {exp.period}
+                      </span>
+                    </div>
+
+                    <ul className="list-disc list-inside space-y-1 text-sm text-zinc-600 dark:text-zinc-400">
+                      {exp.achievements.map((a, i) => (
+                        <li key={i}>{a}</li>
+                      ))}
+                    </ul>
+
+                    <div className="pt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                      📈 {exp.metrics}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* CONTACT FORM */}
+          <section id="contact" className="py-16 px-4 sm:px-6 max-w-3xl mx-auto border-t border-zinc-200 dark:border-zinc-800">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">Me Contacter</h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
+                Vous avez un projet ou une opportunité ? Écrivez-moi directement ci-dessous.
+              </p>
+            </div>
+
+            <form onSubmit={handleContactSubmit} className="space-y-4 bg-white dark:bg-zinc-900/60 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+              {formStatus === 'success' && (
+                <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-sm font-medium">
+                  ✅ Message envoyé avec succès ! John Doe vous répondra dans les 24h.
+                </div>
+              )}
+
+              {formStatus === 'error' && (
+                <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-sm font-medium">
+                  ⚠️ {formError}
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold uppercase text-zinc-700 dark:text-zinc-300 mb-1">Nom complet *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Sophie Martin"
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase text-zinc-700 dark:text-zinc-300 mb-1">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="sophie@example.com"
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase text-zinc-700 dark:text-zinc-300 mb-1">Sujet</label>
+                <input
+                  type="text"
+                  placeholder="Opportunité Lead Tech Full-Stack"
+                  value={formData.subject}
+                  onChange={e => setFormData({...formData, subject: e.target.value})}
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase text-zinc-700 dark:text-zinc-300 mb-1">Message *</label>
+                <textarea
+                  rows="4"
+                  required
+                  placeholder="Bonjour John, nous serions ravis d'échanger sur..."
+                  value={formData.message}
+                  onChange={e => setFormData({...formData, message: e.target.value})}
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                disabled={formStatus === 'loading'}
+                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold text-sm transition shadow-sm"
+              >
+                {formStatus === 'loading' ? 'Envoi en cours... ⏳' : 'Envoyer le message ✉️'}
+              </button>
+            </form>
+          </section>
+
+          {/* FOOTER */}
+          <footer className="py-8 text-center text-xs text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800">
+            © {new Date().getFullYear()} John Doe. Tous droits réservés. Construit avec Next.js, React & Tailwind CSS.
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
