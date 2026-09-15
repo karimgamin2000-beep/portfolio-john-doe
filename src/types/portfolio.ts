@@ -34,3 +34,13 @@ export interface ContactFormData {
 }
 
 export type FormStatus = 'idle' | 'loading' | 'success' | 'error';
+
+export interface Testimonial {
+  id: string;
+  author: string;
+  role: string;
+  company: string;
+  avatarInitials: string;
+  quote: string;
+  relation: string;
+}

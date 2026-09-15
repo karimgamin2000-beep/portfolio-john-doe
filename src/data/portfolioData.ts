@@ -104,3 +104,33 @@ export const PROJECTS: Project[] = [
     liveUrl: null, // Cas limite : null
   },
 ];
+
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    id: 'test-1',
+    author: 'Alexandre Mercier',
+    role: 'VP Engineering',
+    company: 'CloudScale SaaS',
+    avatarInitials: 'AM',
+    quote: 'John a mené la refonte de notre architecture avec une rigueur exemplaire. Sa maîtrise de la performance web a divisé nos temps de chargement par deux.',
+    relation: 'Responsable direct chez CloudScale SaaS',
+  },
+  {
+    id: 'test-2',
+    author: 'Élodie Laurent',
+    role: 'Lead Product Designer',
+    company: 'TechNova Studio',
+    avatarInitials: 'EL',
+    quote: 'Rarement vu un développeur Full-Stack aussi sensible aux détails d’interface et aux normes d’accessibilité. Collaborer avec John a été un plaisir.',
+    relation: 'Ancienne collègue chez TechNova',
+  },
+  {
+    id: 'test-3',
+    author: 'Thomas Benali',
+    role: 'CTO & Co-fondateur',
+    company: 'StartUp Pulse',
+    avatarInitials: 'TB',
+    quote: 'Autonome, force de proposition et toujours en veille technique. John a su stabiliser notre infrastructure temps réel dès ses premiers mois.',
+    relation: 'Superviseur chez StartUp Pulse',
+  },
+];
